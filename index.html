@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STORTHUB - Авторизация</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Анимированный фон -->
+    <div class="background-animation">
+      <div class="floating-shape"></div>
+      <div class="floating-shape"></div>
+      <div class="floating-shape"></div>
+      <div class="floating-shape"></div>
+    </div>
+
+    <!-- Контейнер авторизации -->
+    <div class="auth-container" id="authContainer">
+      <div class="logo">STORT<span>HUB</span></div>
+      <div class="subtitle">Образовательная платформа</div>
+
+      <div class="error-message" id="errorMessage"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="username">Логин</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="form-input"
+            placeholder="Введите логин"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Пароль</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-input"
+            placeholder="Введите пароль"
+            required
+          />
+        </div>
+
+        <button type="submit" class="login-btn" id="loginBtn">
+          Войти в систему
+        </button>
+      </form>
+
+      <!-- Демо-аккаунты -->
+      <div class="demo-credentials">
+        <h4>🎓 Демо-аккаунты</h4>
+        <div class="demo-user" data-login="student" data-password="123456">
+          <div class="demo-login">student / 123456</div>
+          <div class="demo-role">Ученик 5 класса</div>
+        </div>
+        <div class="demo-user" data-login="teacher" data-password="password">
+          <div class="demo-login">teacher / password</div>
+          <div class="demo-role">Учитель информатики</div>
+        </div>
+        <div class="demo-user" data-login="admin" data-password="admin123">
+          <div class="demo-login">admin / admin123</div>
+          <div class="demo-role">Администратор</div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Анимированный фон */
+      .background-animation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
+      .floating-shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .floating-shape:nth-child(1) {
+        width: 80px;
+        height: 80px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+
+      .floating-shape:nth-child(2) {
+        width: 60px;
+        height: 60px;
+        top: 60%;
+        left: 80%;
+        animation-delay: 2s;
+      }
+
+      .floating-shape:nth-child(3) {
+        width: 100px;
+        height: 100px;
+        top: 80%;
+        left: 20%;
+        animation-delay: 4s;
+      }
+
+      .floating-shape:nth-child(4) {
+        width: 40px;
+        height: 40px;
+        top: 30%;
+        left: 70%;
+        animation-delay: 1s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(180deg);
+        }
+      }
+
+      /* Контейнер авторизации */
+      .auth-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 50px;
+        width: 100%;
+        max-width: 450px;
+        text-align: center;
+        position: relative;
+        z-index: 10;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        animation: slideIn 0.8s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .logo {
+        font-size: 32px;
+        font-weight: 700;
+        color: #4d36db;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .logo span {
+        color: #764ba2;
+      }
+
+      .subtitle {
+        color: #666;
+        font-size: 16px;
+        margin-bottom: 40px;
+        font-weight: 500;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+        text-align: left;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 15px 20px;
+        border: 2px solid #e1e5e9;
+        border-radius: 12px;
+        font-size: 16px;
+        font-family: 'Montserrat', sans-serif;
+        background: #fff;
+        transition: all 0.3s ease;
+        outline: none;
+      }
+
+      .form-input:focus {
+        border-color: #4d36db;
+        box-shadow: 0 0 0 4px rgba(77, 54, 219, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 18px 20px;
+        background: linear-gradient(135deg, #4d36db, #6b46c1);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Montserrat', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .login-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(77, 54, 219, 0.4);
+      }
+
+      .login-btn:active {
+        transform: translateY(-1px);
+      }
+
+      .login-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Эффект загрузки */
+      .login-btn.loading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin: -10px 0 0 -10px;
+        border: 2px solid transparent;
+        border-top: 2px solid #fff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .error-message {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        border-left: 4px solid #dc3545;
+        display: none;
+        animation: shake 0.5s ease-in-out;
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-5px);
+        }
+        75% {
+          transform: translateX(5px);
+        }
+      }
+
+      .demo-credentials {
+        background: #e3f2fd;
+        border: 1px solid #2196f3;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 30px;
+        text-align: left;
+      }
+
+      .demo-credentials h4 {
+        color: #1976d2;
+        margin-bottom: 15px;
+        font-size: 16px;
+        text-align: center;
+      }
+
+      .demo-user {
+        background: white;
+        padding: 12px 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        border-left: 4px solid #4d36db;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .demo-user:hover {
+        background: #f5f5f5;
+        transform: translateX(5px);
+      }
+
+      .demo-user:last-child {
+        margin-bottom: 0;
+      }
+
+      .demo-login {
+        font-weight: 600;
+        color: #4d36db;
+        font-size: 14px;
+      }
+
+      .demo-role {
+        font-size: 12px;
+        color: #666;
+        margin-top: 2px;
+      }
+
+      /* Адаптивность */
+      @media (max-width: 768px) {
+        .auth-container {
+          margin: 20px;
+          padding: 30px 25px;
+          max-width: none;
+        }
+
+        .logo {
+          font-size: 28px;
+        }
+
+        .floating-shape {
+          display: none;
+        }
+      }
+
+      /* Скрытое состояние */
+      .hidden {
+        display: none !important;
+      }
+    </style>
+
+    <script>
+      // Статические данные пользователей
+      const USERS = {
+        student: {
+          password: '123456',
+          role: 'student',
+          name: 'Мисайлов Райф',
+          class: '5А',
+        },
+        teacher: {
+          password: 'password',
+          role: 'teacher',
+          name: 'Анна Сергеевна',
+          class: 'Учитель',
+        },
+        admin: {
+          password: 'admin123',
+          role: 'admin',
+          name: 'Администратор',
+          class: 'Система',
+        },
+      };
+
+      // Названия куки для хранения
+      const AUTH_TOKEN = 'storthub_auth_token';
+      const USER_DATA = 'storthub_user_data';
+
+      // Утилиты для работы с куки
+      const CookieUtils = {
+        set: function (name, value, days = 7) {
+          const expires = new Date();
+          expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+          document.cookie = `${name}=${encodeURIComponent(
+            value
+          )};expires=${expires.toUTCString()};path=/;SameSite=Strict`;
+        },
+
+        get: function (name) {
+          const nameEQ = name + '=';
+          const ca = document.cookie.split(';');
+          for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) {
+              return decodeURIComponent(c.substring(nameEQ.length, c.length));
+            }
+          }
+          return null;
+        },
+
+        delete: function (name) {
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+        },
+      };
+
+      // Генерация JWT-подобного токена
+      function generateToken(userData) {
+        const header = btoa(JSON.stringify({ typ: 'JWT', alg: 'HS256' }));
+        const payload = btoa(
+          JSON.stringify({
+            username: userData.username,
+            role: userData.role,
+            exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 дней
+          })
+        );
+        const signature = btoa(`signature_${userData.username}_${Date.now()}`);
+        return `${header}.${payload}.${signature}`;
+      }
+
+      // Проверка валидности токена
+      function validateToken(token) {
+        if (!token) return false;
+
+        try {
+          const parts = token.split('.');
+          if (parts.length !== 3) return false;
+
+          const payload = JSON.parse(atob(parts[1]));
+          const currentTime = Math.floor(Date.now() / 1000);
+
+          return payload.exp > currentTime;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      // Проверка авторизации при загрузке страницы
+      function checkAuth() {
+        const token = CookieUtils.get(AUTH_TOKEN);
+        const userData = CookieUtils.get(USER_DATA);
+
+        if (token && userData && validateToken(token)) {
+          console.log('Пользователь уже авторизован, перенаправление...');
+          window.location.href = 'lesson0.html';
+          return true;
+        } else {
+          // Очищаем невалидные токены
+          CookieUtils.delete(AUTH_TOKEN);
+          CookieUtils.delete(USER_DATA);
+          return false;
+        }
+      }
+
+      // Авторизация пользователя
+      function login(username, password) {
+        const user = USERS[username];
+
+        if (!user || user.password !== password) {
+          throw new Error('Неверный логин или пароль');
+        }
+
+        const userData = {
+          username: username,
+          role: user.role,
+          name: user.name,
+          class: user.class,
+        };
+
+        const token = generateToken(userData);
+
+        // Сохраняем в куки
+        CookieUtils.set(AUTH_TOKEN, token, 7);
+        CookieUtils.set(USER_DATA, JSON.stringify(userData), 7);
+
+        return userData;
+      }
+
+      // Показ ошибки
+      function showError(message) {
+        const errorElement = document.getElementById('errorMessage');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+        errorElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        setTimeout(() => {
+          errorElement.style.display = 'none';
+        }, 5000);
+      }
+
+      // Установка состояния загрузки
+      function setLoading(isLoading) {
+        const loginBtn = document.getElementById('loginBtn');
+        const form = document.getElementById('loginForm');
+
+        if (isLoading) {
+          loginBtn.disabled = true;
+          loginBtn.classList.add('loading');
+          loginBtn.textContent = '';
+          form.style.pointerEvents = 'none';
+        } else {
+          loginBtn.disabled = false;
+          loginBtn.classList.remove('loading');
+          loginBtn.textContent = 'Войти в систему';
+          form.style.pointerEvents = 'auto';
+        }
+      }
+
+      // Проверяем авторизацию сразу при загрузке скрипта
+      if (checkAuth()) {
+        // Если пользователь авторизован, скрываем форму и показываем загрузку
+        document.body.style.display = 'none';
+      }
+
+      // Инициализация при загрузке DOM
+      document.addEventListener('DOMContentLoaded', function () {
+        console.log('Проверка авторизации...');
+
+        // Повторная проверка авторизации
+        if (checkAuth()) {
+          return; // Пользователь уже авторизован
+        }
+
+        console.log('Пользователь не авторизован, показываем форму входа');
+
+        // Обработчик формы авторизации
+        document
+          .getElementById('loginForm')
+          .addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+              showError('Пожалуйста, заполните все поля');
+              return;
+            }
+
+            setLoading(true);
+
+            try {
+              // Имитация задержки сети
+              await new Promise(resolve => setTimeout(resolve, 1000));
+
+              const userData = login(username, password);
+
+              console.log('Авторизация успешна:', userData);
+
+              // Перенаправляем на главную страницу
+              window.location.href = 'lesson0.html';
+            } catch (error) {
+              console.error('Ошибка авторизации:', error.message);
+              showError(error.message);
+              setLoading(false);
+            }
+          });
+
+        // Обработчики для демо-аккаунтов
+        document.querySelectorAll('.demo-user').forEach(user => {
+          user.addEventListener('click', function () {
+            const login = this.getAttribute('data-login');
+            const password = this.getAttribute('data-password');
+
+            document.getElementById('username').value = login;
+            document.getElementById('password').value = password;
+
+            // Добавляем визуальный эффект
+            this.style.background = '#e8f5e8';
+            setTimeout(() => {
+              this.style.background = 'white';
+            }, 300);
+          });
+        });
+
+        // Автофокус на поле логина
+        document.getElementById('username').focus();
+      });
+
+      // Глобальные функции для использования на других страницах
+      window.logout = function () {
+        CookieUtils.delete(AUTH_TOKEN);
+        CookieUtils.delete(USER_DATA);
+        window.location.href = 'index.html';
+      };
+
+      window.getCurrentUser = function () {
+        const token = CookieUtils.get(AUTH_TOKEN);
+        const userData = CookieUtils.get(USER_DATA);
+
+        if (token && userData && validateToken(token)) {
+          try {
+            return JSON.parse(userData);
+          } catch (error) {
+            return null;
+          }
+        }
+        return null;
+      };
+
+      window.requireAuth = function () {
+        const token = CookieUtils.get(AUTH_TOKEN);
+        const userData = CookieUtils.get(USER_DATA);
+
+        if (!token || !userData || !validateToken(token)) {
+          window.location.href = 'index.html';
+          return false;
+        }
+        return true;
+      };
+
+      // Логирование для отладки
+      console.log('🔐 Система авторизации STORTHUB инициализирована');
+      console.log('📋 Доступные аккаунты:', Object.keys(USERS));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>STORTHUB - 6 класс: Шестнадцатеричная система</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/slick.css" />
+    <link rel="stylesheet" href="css/jquery.fancybox.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="header_inner">
+          <a href="2lesson.html" class="logo">STORT<span>HUB</span></a>
+          <div class="exit">
+            <p class="nameuser">Мисайлов Райф</p>
+            <a href="#" class="iconexit">🚪</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="container">
+        <div class="content_inner">
+          <div class="menu">
+            <div class="class-switch">
+              <button class="switch-btn" data-href="index.html">5 класс</button>
+              <button class="switch-btn active" data-href="2lesson.html">
+                6 класс
+              </button>
+            </div>
+
+            <ul class="lesson-list">
+              <li data-href="2lesson.html">
+                Урок 1. Двоичное представление в компьютерах
+              </li>
+              <li data-href="2lesson2.html">Урок 2. Бит и Байт</li>
+              <li data-href="2lesson3.html">
+                Урок 3. Десятичная и двоичная система счисления и их
+                преобразование
+              </li>
+              <li data-href="2lesson4.html" class="active">
+                Урок 4. Шестнадцатеричная система счисления
+              </li>
+              <li data-href="2lesson5.html">
+                Урок 5. Как работают компьютеры: Программное и аппаратное
+                обеспечение
+              </li>
+              <li data-href="2lesson6.html">
+                Урок 6. Как работают компьютеры – Ввод, Хранение, Обработка и
+                Вывод данных
+              </li>
+            </ul>
+          </div>
+
+          <div class="content_games">
+            <!-- Интерактивная задача -->
+            <div class="hex-challenge">
+              <h3>🔢 Продвинутая задача: 0xFFF в десятичной системе</h3>
+              <p>Используй формулу для трёхзначного hex числа</p>
+
+              <div class="hex-calculator">
+                <h4>🧮 Пошаговый калькулятор:</h4>
+
+                <div class="calc-row">
+                  <span class="label">F × 16² =</span>
+                  <input type="number" id="step1" placeholder="?" />
+                  <span class="check-mark" id="check1">✓</span>
+                </div>
+
+                <div class="calc-row">
+                  <span class="label">F × 16¹ =</span>
+                  <input type="number" id="step2" placeholder="?" />
+                  <span class="check-mark" id="check2">✓</span>
+                </div>
+
+                <div class="calc-row">
+                  <span class="label">F × 16⁰ =</span>
+                  <input type="number" id="step3" placeholder="?" />
+                  <span class="check-mark" id="check3">✓</span>
+                </div>
+
+                <div class="calc-row final-row">
+                  <span class="label">Итого:</span>
+                  <input type="number" id="finalAnswer" placeholder="?" />
+                  <button id="checkFinal" class="check-final-btn">
+                    Проверить
+                  </button>
+                </div>
+              </div>
+
+              <div class="hex-hints">
+                <div class="hint">💡 16² = 256</div>
+                <div class="hint">💡 16¹ = 16</div>
+                <div class="hint">💡 16⁰ = 1</div>
+                <div class="hint">💡 F = 15</div>
+              </div>
+
+              <div class="hex-result" id="calculatorResult"></div>
+            </div>
+
+            <img
+              src="images/arrow.png"
+              alt="Далее"
+              class="arrow"
+              id="nextArrow"
+              style="display: none"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for tooltips -->
+    <div id="tooltipOverlay" class="tooltip-overlay"></div>
+    <div id="tooltipModal" class="tooltip-modal"></div>
+
+    <style>
+      .hex-challenge {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 3px solid #4d36db;
+        text-align: center;
+        max-width: 650px;
+        width: 90%;
+      }
+
+      .hex-challenge h3 {
+        color: #4d36db;
+        margin-bottom: 15px;
+        font-size: 20px;
+      }
+
+      .hex-challenge p {
+        color: #666;
+        margin-bottom: 25px;
+        font-style: italic;
+      }
+
+      .hex-calculator {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      .hex-calculator h4 {
+        color: #4d36db;
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+
+      .calc-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding: 10px;
+        background: white;
+        border-radius: 8px;
+      }
+
+      .calc-row.final-row {
+        background: #e8f5e8;
+        border: 2px solid #28a745;
+        font-weight: bold;
+      }
+
+      .label {
+        font-family: monospace;
+        font-size: 16px;
+        font-weight: bold;
+        min-width: 120px;
+        text-align: left;
+      }
+
+      .calc-row input {
+        width: 100px;
+        height: 40px;
+        font-size: 16px;
+        text-align: center;
+        border: 2px solid #4d36db;
+        border-radius: 5px;
+        font-family: monospace;
+        font-weight: bold;
+      }
+
+      .calc-row input:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(77, 54, 219, 0.3);
+      }
+
+      .calc-row input.correct {
+        border-color: #28a745;
+        background: #d4edda;
+      }
+
+      .calc-row input.incorrect {
+        border-color: #dc3545;
+        background: #f8d7da;
+      }
+
+      .check-mark {
+        color: #28a745;
+        font-size: 20px;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .check-mark.visible {
+        opacity: 1;
+      }
+
+      .check-final-btn {
+        padding: 10px 20px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Montserrat', sans-serif;
+      }
+
+      .check-final-btn:hover {
+        background: #218838;
+        transform: translateY(-1px);
+      }
+
+      .hex-hints {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .hint {
+        background: #fff3cd;
+        color: #856404;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        border: 1px solid #ffeaa7;
+      }
+
+      .hex-result {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: bold;
+        min-height: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .hex-result.success {
+        background: #d4edda;
+        color: #155724;
+        border: 2px solid #28a745;
+      }
+
+      .hex-result.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 2px solid #dc3545;
+      }
+
+      @media (max-width: 768px) {
+        .hex-challenge {
+          top: 50%;
+          padding: 20px;
+          margin: 20px;
+        }
+
+        .calc-row {
+          flex-direction: column;
+          gap: 10px;
+          text-align: center;
+        }
+
+        .label {
+          min-width: auto;
+        }
+
+        .hex-hints {
+          justify-content: center;
+        }
+
+        .hint {
+          font-size: 12px;
+          padding: 6px 8px;
+        }
+      }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
+    <script src="js/help.js"></script>
+    <script src="js/main-6class.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const step1Input = document.getElementById('step1');
+        const step2Input = document.getElementById('step2');
+        const step3Input = document.getElementById('step3');
+        const finalInput = document.getElementById('finalAnswer');
+        const checkFinalBtn = document.getElementById('checkFinal');
+        const resultDiv = document.getElementById('calculatorResult');
+        const nextArrow = document.getElementById('nextArrow');
+
+        // Правильные ответы
+        const answers = {
+          step1: 3840, // 15 × 256
+          step2: 240, // 15 × 16
+          step3: 15, // 15 × 1
+          final: 4095, // 3840 + 240 + 15
+        };
+
+        let completedSteps = 0;
+
+        function checkStep(input, stepNum, checkMarkId) {
+          const userAnswer = parseInt(input.value);
+          const correctAnswer = answers[`step${stepNum}`];
+          const checkMark = document.getElementById(checkMarkId);
+
+          if (userAnswer === correctAnswer) {
+            input.classList.remove('incorrect');
+            input.classList.add('correct');
+            checkMark.classList.add('visible');
+            completedSteps++;
+
+            if (completedSteps === 3) {
+              // Автоматически заполняем итоговое поле подсказкой
+              const sum = answers.step1 + answers.step2 + answers.step3;
+              finalInput.placeholder = `${answers.step1} + ${answers.step2} + ${answers.step3} = ?`;
+            }
+
+            return true;
+          } else if (userAnswer && !isNaN(userAnswer)) {
+            input.classList.remove('correct');
+            input.classList.add('incorrect');
+            checkMark.classList.remove('visible');
+
+            // Даем подсказки для каждого шага
+            if (stepNum === 1 && userAnswer !== correctAnswer) {
+              showHint(`Шаг 1: 15 × 256 = ${correctAnswer}`);
+            } else if (stepNum === 2 && userAnswer !== correctAnswer) {
+              showHint(`Шаг 2: 15 × 16 = ${correctAnswer}`);
+            } else if (stepNum === 3 && userAnswer !== correctAnswer) {
+              showHint(`Шаг 3: 15 × 1 = ${correctAnswer}`);
+            }
+
+            return false;
+          }
+
+          input.classList.remove('correct', 'incorrect');
+          checkMark.classList.remove('visible');
+          return false;
+        }
+
+        function showHint(message) {
+          resultDiv.innerHTML = message;
+          resultDiv.className = 'hex-result error';
+          setTimeout(() => {
+            resultDiv.innerHTML = '';
+            resultDiv.className = 'hex-result';
+          }, 3000);
+        }
+
+        function checkFinalAnswer() {
+          const userAnswer = parseInt(finalInput.value);
+
+          if (completedSteps < 3) {
+            showResult('Сначала реши все промежуточные шаги!', 'error');
+            return;
+          }
+
+          if (isNaN(userAnswer) || finalInput.value.trim() === '') {
+            showResult('Введи итоговый ответ!', 'error');
+            return;
+          }
+
+          if (userAnswer === answers.final) {
+            showResult('🎉 Превосходно! 0xFFF₁₆ = 4095₁₀', 'success');
+            nextArrow.style.display = 'block';
+            checkFinalBtn.disabled = true;
+            finalInput.disabled = true;
+
+            setTimeout(() => {
+              resultDiv.innerHTML +=
+                '<br><small>Полное решение: 15×256 + 15×16 + 15×1 = 3840 + 240 + 15 = 4095</small>';
+            }, 1000);
+          } else {
+            showResult(
+              `❌ Неправильно. Сложи результаты всех шагов: ${answers.step1} + ${answers.step2} + ${answers.step3}`,
+              'error'
+            );
+          }
+        }
+
+        function showResult(message, type) {
+          resultDiv.innerHTML = message;
+          resultDiv.className = `hex-result ${type}`;
+        }
+
+        // Обработчики для каждого шага
+        step1Input.addEventListener('input', () =>
+          checkStep(step1Input, 1, 'check1')
+        );
+        step2Input.addEventListener('input', () =>
+          checkStep(step2Input, 2, 'check2')
+        );
+        step3Input.addEventListener('input', () =>
+          checkStep(step3Input, 3, 'check3')
+        );
+
+        // Обработчик для финального ответа
+        checkFinalBtn.addEventListener('click', checkFinalAnswer);
+        finalInput.addEventListener('keypress', e => {
+          if (e.key === 'Enter') {
+            checkFinalAnswer();
+          }
+        });
+
+        // Автофокус на первое поле
+        step1Input.focus();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>STORTHUB - Урок 2: Эргономика</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/slick.css" />
+    <link rel="stylesheet" href="css/jquery.fancybox.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <script>
+      // Простое и безопасное решение для красивых URL
+      (function () {
+        'use strict';
+
+        // Проверяем, что мы на правильной странице с .html
+        const currentPath = window.location.pathname;
+        const hasHtmlExtension = currentPath.includes('.html');
+
+        // Если путь не содержит .html, значит это транслитерированный URL
+        // Пытаемся найти соответствующую HTML страницу
+        if (!hasHtmlExtension && currentPath !== '/') {
+          // Список возможных страниц для поиска соответствия
+          const possiblePages = [
+            'lesson0.html',
+            'lesson1.html',
+            'lesson1-1.html',
+            'lesson1-2.html',
+            'lesson1-3.html',
+            'lesson1-4.html',
+            'lesson1-5.html',
+            'lesson1-6.html',
+            'lesson1-7.html',
+            'lesson1-8.html',
+            'lesson2.html',
+            'lesson2-2.html',
+            'lesson2-3.html',
+            'lesson2-4.html',
+            'lesson2-5.html',
+            'lesson2-6.html',
+            'lesson2-7.html',
+            'lesson2-8.html',
+            'lesson2-9.html',
+            'lesson2-10.html',
+            'lesson2-11.html',
+            'lesson3.html',
+            'lesson3-2.html',
+            'lesson3-3.html',
+            'lesson3-4.html',
+            'lesson3-5.html',
+            'lesson3-6.html',
+            'lesson3-7.html',
+            'lesson3-8.html',
+            'lesson4.html',
+            'lesson4-2.html',
+            'lesson4-3.html',
+            'lesson5.html',
+            'lesson5-2.html',
+            'lesson5-3.html',
+            'lesson5-4.html',
+            'lesson5-5.html',
+            'lesson6.html',
+            'lesson6-2.html',
+            'lesson6-3.html',
+            'lesson6-4.html',
+            'lesson6-5.html',
+            'lesson6-6.html',
+            'lesson6-7.html',
+          ];
+
+          // Ищем страницу по сохраненному URL в localStorage
+          const savedPage = localStorage.getItem('currentPage');
+          if (savedPage && possiblePages.includes(savedPage)) {
+            window.location.replace(savedPage);
+            return;
+          }
+
+          // Если не нашли, перенаправляем на главную
+          window.location.replace('lesson0.html');
+          return;
+        }
+
+        // Если мы на обычной HTML странице, обновляем URL
+        if (hasHtmlExtension) {
+          function transliterate(text) {
+            const map = {
+              а: 'a',
+              б: 'b',
+              в: 'v',
+              г: 'g',
+              д: 'd',
+              е: 'e',
+              ё: 'e',
+              ж: 'zh',
+              з: 'z',
+              и: 'i',
+              й: 'i',
+              к: 'k',
+              л: 'l',
+              м: 'm',
+              н: 'n',
+              о: 'o',
+              п: 'p',
+              р: 'r',
+              с: 's',
+              т: 't',
+              у: 'u',
+              ф: 'f',
+              х: 'h',
+              ц: 'ts',
+              ч: 'ch',
+              ш: 'sh',
+              щ: 'shch',
+              ъ: '',
+              ы: 'y',
+              ь: '',
+              э: 'e',
+              ю: 'yu',
+              я: 'ya',
+              ' ': '-',
+              _: '-',
+              '–': '-',
+              '-': '-',
+            };
+
+            return text
+              .toLowerCase()
+              .split('')
+              .map(char => (map[char] !== undefined ? map[char] : char))
+              .join('')
+              .replace(/[^a-z0-9\-]/g, '')
+              .replace(/-+/g, '-')
+              .replace(/^-|-$/g, '');
+          }
+
+          function updateURL() {
+            // Сохраняем текущую страницу
+            const currentPage = window.location.pathname.split('/').pop();
+            localStorage.setItem('currentPage', currentPage);
+
+            // Обновляем URL только если поддерживается History API
+            if (window.history && window.history.pushState) {
+              const title = document.title.replace(/^STORTHUB\s*[-–—]\s*/i, '');
+              const slug = transliterate(title);
+
+              if (slug) {
+                // Используем replaceState вместо pushState, чтобы не добавлять в историю
+                window.history.replaceState(
+                  { realPage: currentPage },
+                  title,
+                  '/' + slug
+                );
+              }
+            }
+          }
+
+          // Обработка кнопки "Назад"
+          window.addEventListener('popstate', function (event) {
+            const realPage =
+              event.state?.realPage || localStorage.getItem('currentPage');
+            if (realPage) {
+              window.location.href = realPage;
+            }
+          });
+
+          // Обновляем URL после загрузки DOM
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateURL);
+          } else {
+            updateURL();
+          }
+        }
+      })();
+    </script>
+    <header class="header">
+      <div class="container">
+        <div class="header_inner">
+          <a href="lesson1.html" class="logo">STORT<span>HUB</span></a>
+          <div class="exit">
+            <p class="nameuser">Мисайлов Райф</p>
+            <a href="#" class="iconexit">🚪</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="container">
+        <div class="content_inner">
+          <div class="menu">
+            <div class="class-switch">
+              <button class="switch-btn active" data-href="lesson0.html">
+                5 класс
+              </button>
+              <button class="switch-btn" data-href="2lesson.html">
+                6 класс
+              </button>
+            </div>
+            <ul class="lesson-list">
+              <li data-href="lesson0.html">Введение</li>
+              <li data-href="lesson1.html">
+                Урок 1. Базовые правила безопасности в кабинете информатики
+              </li>
+              <li data-href="lesson2.html" class="active">
+                Урок 2. Эргономика
+              </li>
+              <li data-href="lesson3.html">
+                Урок 3. Кибер-гигиена и защита личных данных
+              </li>
+              <li data-href="lesson4.html">
+                Урок 4. Как работают компьютеры: Аппаратное обеспечение
+              </li>
+              <li data-href="lesson5.html">
+                Урок 5. Как работают компьютеры: Программное обеспечение
+              </li>
+              <li data-href="lesson6.html">Урок 6. Алгоритмы</li>
+            </ul>
+          </div>
+
+          <div class="content_games">
+            <img
+              src="images/Video2_1.png"
+              alt="Урок 2: Эргономика - введение"
+              class="content_games_img"
+            />
+            <img src="images/arrow.png" alt="Далее" class="arrow" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for tooltips -->
+    <div id="tooltipOverlay" class="tooltip-overlay"></div>
+    <div id="tooltipModal" class="tooltip-modal"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
+    <script src="js/help.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
